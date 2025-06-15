@@ -1,80 +1,99 @@
 import React from "react";
 
+// Placeholder for missing album art - consider moving to a shared utils/components file
+const AlbumArtPlaceholderIcon = ({ className = "w-10 h-10 text-gray-500" }) => (
+  <svg className={className} fill="currentColor" viewBox="0 0 20 20">
+    <path fillRule="evenodd" d="M10 3a1 1 0 00-.894.553l-7 14A1 1 0 003 19h14a1 1 0 00.894-1.447l-7-14A1 1 0 0010 3zm0 2.236L14.432 17H5.568L10 5.236z" clipRule="evenodd" />
+  </svg>
+);
+
 const formatDuration = (ms) => {
+  if (ms === undefined || ms === null) return '--:--';
   const minutes = Math.floor(ms / 60000);
   const seconds = Math.floor((ms % 60000) / 1000);
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 };
 
-export default function Queue({ queue, onRemove }) {
+export default function Queue({ queue, onRemove, onClearQueue, className }) { // Added className
   return (
     <>
-      <div className="p-5 bg-[#1f1f1f] shadow-md">
-        <h2 className="text-xl font-bold text-white flex items-center gap-3">
-          Queue
-          <span className="text-sm font-medium px-3 py-1 rounded-full bg-[#2a2a2a] text-[#1DB954]">
-            {queue.length} tracks
+      {/* Queue Header */}
+      <div className="p-5 flex justify-between items-center border-b border-gray-700">
+        <div className="flex items-center gap-3">
+          <h2 className="text-xl font-bold text-white font-['Roboto']">
+            Current Queue
+          </h2>
+          <span className="text-sm font-medium px-3 py-1 rounded-full bg-gray-700 text-blue-400">
+            {queue.length} {queue.length === 1 ? "track" : "tracks"}
           </span>
-        </h2>
+        </div>
+        {queue.length > 0 && (
+          <button
+            onClick={onClearQueue}
+            className="bg-red-500 hover:bg-red-600 text-white text-xs font-semibold py-1.5 px-3 rounded-md
+                       transition-all duration-200 ease-in-out hover:shadow-md active:bg-red-700 active:scale-95" // Added active state
+            title="Clear entire queue"
+          >
+            Clear Queue
+          </button>
+        )}
       </div>
       
-      <div className="flex-1 overflow-y-auto">
+      {/* Queue List Area */}
+      <div className={`flex-1 overflow-y-auto font-['Roboto'] ${className}`}> {/* Added className */}
         {!queue.length ? (
-          <div className="h-full flex items-center justify-center">
-            <div className="text-center px-6">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#2a2a2a] flex items-center justify-center">
-                <span className="text-3xl">🎵</span>
-              </div>
-              <p className="text-gray-400 text-base">
-                Your queue is empty
-                <span className="block text-sm text-gray-500 mt-2">
-                  Add tracks from the search panel
-                </span>
-              </p>
+          <div className="h-full flex items-center justify-center p-6 text-center">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-700 flex items-center justify-center">
+              <span className="text-3xl text-gray-400">🎵</span>
             </div>
+            <p className="text-gray-300 text-lg font-medium">
+              The queue is empty.
+            </p>
+            <p className="text-sm text-gray-400 mt-1">
+              Add some tracks from the search panel!
+            </p>
           </div>
         ) : (
-          <div className="p-5 space-y-1">
+          <div className="p-4 space-y-3">
             {queue.map((track, index) => (
               <div
                 key={track.id}
-                style={{ animationDelay: `${index * 50}ms` }}
-                className="group hover:bg-[#282828] p-3 rounded-lg
-                  transition-all duration-200 animate-fadeIn cursor-default"
+                style={{ animationDelay: `${index * 100}ms`, opacity: 0 }} // Changed delay to 100ms
+                className="group bg-gray-700 hover:bg-gray-600 p-3 rounded-lg shadow-md
+                           transition-all duration-200 ease-in-out animate-fadeIn flex items-center gap-3 hover:scale-105" // Added hover:scale-105
               >
-                <div className="flex gap-3">
-                  {track.album?.image && (
-                    <img
-                      src={track.album.image}
-                      alt={track.album.name}
-                      className="w-12 h-12 rounded-md object-cover"
-                    />
-                  )}
-                  <div className="flex-1 min-w-0">
-                    <div className="font-medium text-white truncate text-[15px]">
-                      {track.name}
-                    </div>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-xs text-[#1DB954]">
-                        {track.duration_ms ? formatDuration(track.duration_ms) : '--:--'}
-                      </span>
-                      <span className="text-[13px] text-gray-400 truncate">
-                        {track.artists?.map(a => a.name).join(', ')}
-                      </span>
-                    </div>
+                {track.album?.image ? (
+                  <img
+                    src={track.album.image}
+                    alt={track.album.name || "Album Art"}
+                    className="w-10 h-10 rounded object-cover flex-shrink-0"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded bg-gray-600 flex items-center justify-center flex-shrink-0">
+                    <AlbumArtPlaceholderIcon className="w-6 h-6 text-gray-400" />
                   </div>
-                  <button
-                    onClick={() => onRemove(track.id)}
-                    className="text-gray-400 hover:text-red-400 p-2 rounded-full
-                      hover:bg-red-400/10 opacity-0 group-hover:opacity-100
-                      transition-all duration-200 hover:scale-110 -mr-1"
-                    title="Remove from queue"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                  </button>
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-white truncate text-sm">
+                    {track.name || "Unknown Track"}
+                  </div>
+                  <div className="text-xs text-gray-400 truncate">
+                    {track.artists?.map(a => a.name).join(', ') || "Unknown Artist"}
+                  </div>
                 </div>
+                <span className="text-xs text-gray-400 mr-2 flex-shrink-0">
+                  {formatDuration(track.duration_ms)}
+                </span>
+                <button
+                  onClick={() => onRemove(track.id)}
+                  className="text-gray-400 hover:text-red-500 p-1.5 rounded-full
+                             hover:bg-red-500/10 transition-colors duration-200"
+                  title="Remove from queue"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                  </svg>
+                </button>
               </div>
             ))}
           </div>
