@@ -20,7 +20,7 @@ export default function Queue({ queue, onRemove, onClearQueue, className }) { //
       {/* Queue Header */}
       <div className="p-5 flex justify-between items-center border-b border-gray-700">
         <div className="flex items-center gap-3">
-          <h2 className="text-xl font-bold text-white font-['Roboto']">
+          <h2 className="heading-oswald text-xl text-white"> {/* Applied .heading-oswald */}
             Current Queue
           </h2>
           <span className="text-sm font-medium px-3 py-1 rounded-full bg-gray-700 text-blue-400">
@@ -40,7 +40,8 @@ export default function Queue({ queue, onRemove, onClearQueue, className }) { //
       </div>
       
       {/* Queue List Area */}
-      <div className={`flex-1 overflow-y-auto font-['Roboto'] ${className}`}> {/* Added className */}
+      {/* Added relative and overflow-hidden to the scrollable container */}
+      <div className={`flex-1 overflow-y-auto font-['Roboto'] relative overflow-hidden ${className || ''}`}>
         {!queue.length ? (
           <div className="h-full flex items-center justify-center p-6 text-center">
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-700 flex items-center justify-center">
@@ -54,13 +55,13 @@ export default function Queue({ queue, onRemove, onClearQueue, className }) { //
             </p>
           </div>
         ) : (
-          <div className="p-4 space-y-3">
+          <div className="p-4 space-y-2"> {/* Changed space-y-3 to space-y-2 */}
             {queue.map((track, index) => (
               <div
                 key={track.id}
-                style={{ animationDelay: `${index * 100}ms`, opacity: 0 }} // Changed delay to 100ms
-                className="group bg-gray-700 hover:bg-gray-600 p-3 rounded-lg shadow-md
-                           transition-all duration-200 ease-in-out animate-fadeIn flex items-center gap-3 hover:scale-105" // Added hover:scale-105
+                style={{ animationDelay: `${index * 100}ms`, opacity: 0 }}
+                className="group bg-[#1e1e1e] hover:bg-[#2a2a2a] p-3 rounded-lg shadow-md hover:shadow-lg
+                           transition-all duration-200 ease-in-out animate-fadeIn flex items-center gap-3 hover:scale-105" // Updated BGs, added hover:shadow-lg
               >
                 {track.album?.image ? (
                   <img

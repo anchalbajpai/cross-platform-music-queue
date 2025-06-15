@@ -24,8 +24,8 @@ export default function TrackCard({ track, onAddToQueue, style, className }) { /
   return (
     <div
       style={style} // For animation delay
-      className={`group bg-gray-700 hover:bg-gray-600 p-4 rounded-lg shadow-lg
-                 transition-all duration-200 ease-in-out hover:shadow-xl hover:scale-105 flex items-center gap-4 font-['Roboto'] ${className}`} // Added hover:scale-105 and className
+      className={`group bg-[#1e1e1e] hover:bg-[#2a2a2a] px-4 py-3 rounded-lg shadow-lg
+                 transition-all duration-200 ease-in-out hover:shadow-xl hover:scale-105 flex items-center gap-4 font-['Roboto'] ${className}`} // Updated BGs and Padding
     >
       {track.album?.image ? (
         <img

@@ -2,6 +2,8 @@
 @import "tailwindcss/preflight";
 @import "tailwindcss/utilities";
 
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap'); /* Oswald font import */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -38,6 +40,13 @@ html, body, #root {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.heading-oswald { /* Oswald heading class */
+  font-family: "Oswald", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
 }
 
 /* Roboto font import - ensure this is not duplicated if already present elsewhere, e.g. from a previous attempt */
