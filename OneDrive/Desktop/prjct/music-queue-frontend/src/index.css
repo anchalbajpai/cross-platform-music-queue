@@ -14,7 +14,7 @@
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.3s ease-out forwards;
+  animation: fadeIn 0.5s ease-out forwards; /* Updated duration */
 }
 
 * {
@@ -30,7 +30,7 @@ html, body, #root {
 }
 
 :root {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Roboto', system-ui, -apple-system, sans-serif; /* Updated font */
   line-height: 1.5;
   font-weight: 400;
   color-scheme: dark;
@@ -39,6 +39,10 @@ html, body, #root {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Roboto font import - ensure this is not duplicated if already present elsewhere, e.g. from a previous attempt */
+/* (Assuming it's not there based on the last read_files output) */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
@@ -58,7 +62,8 @@ html, body, #root {
   background: #ffffff30;
 }
 
-/* Responsive Layout */
+/* Responsive Layout handled by Tailwind classes in App.jsx */
+/*
 @media (max-width: 768px) {
   #root > div {
     flex-direction: column !important;
@@ -77,3 +82,4 @@ html, body, #root {
     height: 60% !important;
   }
 }
+*/

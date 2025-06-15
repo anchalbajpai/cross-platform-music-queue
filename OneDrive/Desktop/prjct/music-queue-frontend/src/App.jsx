@@ -8,6 +8,9 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [platform, setPlatform] = useState("spotify");
   const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // ADDED
+  const [error, setError] = useState(null); // ADDED
+  const [searchAttempted, setSearchAttempted] = useState(false); // ADDED
   const [queue, setQueue] = useState(() => {
     const saved = localStorage.getItem("musicQueue");
     return saved ? JSON.parse(saved) : [];
@@ -19,8 +22,19 @@ export default function App() {
 
   const handleSearch = async () => {
     if (!query.trim()) return;
-    const data = await searchTracks(platform, query);
-    setResults(data);
+    setIsLoading(true); // ADDED
+    setError(null); // ADDED
+    setSearchAttempted(true); // ADDED
+    try {
+      const data = await searchTracks(platform, query);
+      setResults(data);
+    } catch (err) {
+      console.error("Search failed:", err);
+      setError(err.message || "Failed to fetch tracks. Please try again."); // ADDED
+      setResults([]);
+    } finally {
+      setIsLoading(false); // ADDED
+    }
   };
 
   const handleAddToQueue = (track) => {
@@ -31,11 +45,22 @@ export default function App() {
     setQueue((prev) => prev.filter((t) => t.id !== trackId));
   };
 
+  const handleClearQueue = () => { // ADDED
+    setQueue([]);
+  };
+
   return (
-    <div className="min-h-screen bg-[#121212] p-4 font-['Inter'] antialiased">
-      <div className="h-[calc(100vh-2rem)] flex gap-4">
-        {/* Search Panel */}
-        <section className="w-[35%] min-w-[400px] flex flex-col bg-[#1a1a1a] rounded-xl shadow-lg overflow-hidden">
+    <div className="min-h-screen bg-[#1A202C] p-4 font-['Inter'] antialiased"> {/* CORRECTED BG */}
+      {/* Changed to flex-col by default, md:flex-row for medium screens and up.
+          Adjusted height for mobile: h-auto to allow content to define height,
+          md:h-[calc(100vh-2rem)] for larger screens to maintain full viewport height minus padding.
+      */}
+      <div className="flex flex-col md:flex-row gap-4 h-auto md:h-[calc(100vh-2rem)]">
+        {/* Search Panel: Adjusted width and min-width for responsiveness.
+            Height is auto on mobile (content defines it), full height for sidebar layout on md+ screens.
+            Added overflow-hidden for md+ screens to contain its own scrollable children if necessary.
+        */}
+        <section className="w-full md:w-[35%] min-w-[320px] md:min-w-[400px] flex flex-col bg-[#2D3748] rounded-xl shadow-lg md:overflow-hidden"> {/* CORRECTED BG, responsive widths, md:overflow-hidden */}
           <div className="flex-none p-5">
             <SearchBox
               query={query}
@@ -43,17 +68,32 @@ export default function App() {
               platform={platform}
               setPlatform={setPlatform}
               onSearch={handleSearch}
+              isLoading={isLoading} // ADDED
+              error={error} // ADDED
             />
           </div>
           
-          <div className="flex-1 overflow-hidden">
-            <TrackList tracks={results} onAddToQueue={handleAddToQueue} />
+          {/* On mobile, this part will take its natural height.
+              On md+ screens, it will be scrollable within the fixed height of the search panel.
+          */}
+          <div className="flex-1 md:overflow-y-auto"> {/* Changed overflow-hidden to md:overflow-y-auto */}
+            <TrackList
+              tracks={results}
+              onAddToQueue={handleAddToQueue}
+              searchAttempted={searchAttempted} // ADDED
+            />
           </div>
         </section>
 
-        {/* Queue Panel */}
-        <section className="flex-1 flex flex-col bg-[#1f1f1f] rounded-xl shadow-lg overflow-hidden">
-          <Queue queue={queue} onRemove={handleRemoveFromQueue} />
+        {/* Queue Panel: Adjusted width for responsiveness.
+            Height is auto on mobile (content defines it), full height for sidebar layout on md+ screens.
+        */}
+        <section className="w-full md:flex-1 flex flex-col bg-[#2D3748] rounded-xl shadow-lg md:overflow-hidden"> {/* CORRECTED BG, responsive width, md:overflow-hidden */}
+          <Queue
+            queue={queue}
+            onRemove={handleRemoveFromQueue}
+            onClearQueue={handleClearQueue} // ADDED
+          />
         </section>
       </div>
     </div>
