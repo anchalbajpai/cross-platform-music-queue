@@ -50,22 +50,21 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#1A202C] p-4 font-['Inter'] antialiased"> {/* CORRECTED BG */}
+    <div className="min-h-screen p-4 font-[var(--font-family-sans)] text-[var(--aura-text-primary)] antialiased"> {/* Updated font, text color, removed explicit BG */}
       {/* Changed to flex-col by default, md:flex-row for medium screens and up.
           Adjusted height for mobile: h-auto to allow content to define height,
           md:h-[calc(100vh-2rem)] for larger screens to maintain full viewport height minus padding.
       */}
       <div className="flex flex-col md:flex-row gap-4 h-auto md:h-[calc(100vh-2rem)]">
-        {/* Search Panel: Adjusted width and min-width for responsiveness.
-            Height is auto on mobile (content defines it), full height for sidebar layout on md+ screens.
-            Added overflow-hidden for md+ screens to contain its own scrollable children if necessary.
-        */}
-        <section className="w-full md:w-[35%] min-w-[320px] md:min-w-[400px] flex flex-col bg-[#2D3748] rounded-xl shadow-lg md:overflow-hidden"> {/* CORRECTED BG, responsive widths, md:overflow-hidden */}
-          {/* Added Search Panel Title */}
-          <h2 className="heading-oswald text-xl text-white px-5 pt-5 pb-2"> {/* Adjusted padding */}
+        {/* Search Panel: AuraFlow Styling */}
+        <section className="w-full md:w-[35%] min-w-[320px] md:min-w-[400px] flex flex-col
+                           bg-[var(--aura-panel-bg)] backdrop-blur-lg border border-[var(--aura-panel-border)]
+                           rounded-2xl shadow-xl md:overflow-hidden">
+          {/* Search Panel Title: AuraFlow Styling */}
+          <h2 className="font-[var(--font-family-headings)] text-xl text-[var(--aura-text-headings)] px-5 pt-5 pb-2">
             Search Music
           </h2>
-          <div className="flex-none p-5 pt-3"> {/* Adjusted SearchBox container top padding */}
+          <div className="flex-none p-5 pt-3">
             <SearchBox
               query={query}
               setQuery={setQuery}
@@ -89,10 +88,10 @@ export default function App() {
           </div>
         </section>
 
-        {/* Queue Panel: Adjusted width for responsiveness.
-            Height is auto on mobile (content defines it), full height for sidebar layout on md+ screens.
-        */}
-        <section className="w-full md:flex-1 flex flex-col bg-[#2D3748] rounded-xl shadow-lg md:overflow-hidden"> {/* CORRECTED BG, responsive width, md:overflow-hidden */}
+        {/* Queue Panel: AuraFlow Styling */}
+        <section className="w-full md:flex-1 flex flex-col
+                           bg-[var(--aura-panel-bg)] backdrop-blur-lg border border-[var(--aura-panel-border)]
+                           rounded-2xl shadow-xl md:overflow-hidden">
           <Queue
             queue={queue}
             onRemove={handleRemoveFromQueue}

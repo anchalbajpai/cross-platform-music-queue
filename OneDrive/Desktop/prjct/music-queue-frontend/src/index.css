@@ -2,7 +2,9 @@
 @import "tailwindcss/preflight";
 @import "tailwindcss/utilities";
 
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap'); /* Oswald font import */
+/* AuraFlow Font Imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600;700&display=swap');
 
 @keyframes fadeIn {
   from {
@@ -28,30 +30,41 @@
 html, body, #root {
   height: 100vh;
   width: 100vw;
-  overflow: hidden;
+  overflow: hidden; /* Existing style, kept */
+  /* AuraFlow Global Styles */
+  font-family: var(--font-family-sans);
+  color: var(--aura-text-primary);
+  background: linear-gradient(135deg, var(--aura-bg-start), var(--aura-bg-end));
+  min-height: 100vh; /* Ensure gradient covers full height */
+  -webkit-font-smoothing: antialiased; /* Keep existing smoothing */
+  -moz-osx-font-smoothing: grayscale; /* Keep existing smoothing */
 }
 
 :root {
-  font-family: 'Roboto', system-ui, -apple-system, sans-serif; /* Updated font */
-  line-height: 1.5;
-  font-weight: 400;
-  color-scheme: dark;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  /* AuraFlow Color Palette */
+  --aura-bg-start: #2c1a4d; /* Dark Purple */
+  --aura-bg-end: #1a2c4d;   /* Deep Blue */
+  --aura-panel-bg: rgba(255, 255, 255, 0.08);
+  --aura-panel-border: rgba(255, 255, 255, 0.15);
+  --aura-accent: #00CFE8; /* Vivid Cyan/Teal */
+  --aura-accent-hover: #00A9BF; /* Darker Cyan/Teal for hover */
+  --aura-text-primary: #E5E7EB; /* Light Gray (Tailwind gray-200) */
+  --aura-text-secondary: #9CA3AF; /* Medium Gray (Tailwind gray-400) */
+  --aura-text-headings: #F3F4F6; /* Lighter Gray for headings (Tailwind gray-100) */
 
-.heading-oswald { /* Oswald heading class */
-  font-family: "Oswald", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-style: normal;
-}
+  /* AuraFlow Fonts */
+  --font-family-sans: 'Inter', sans-serif;
+  --font-family-headings: 'Outfit', sans-serif;
 
-/* Roboto font import - ensure this is not duplicated if already present elsewhere, e.g. from a previous attempt */
-/* (Assuming it's not there based on the last read_files output) */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+  /* Existing :root properties - keeping them for now unless they directly conflict */
+  line-height: 1.5; /* Existing */
+  font-weight: 400; /* Existing - default body font weight */
+  color-scheme: dark; /* Existing */
+  font-synthesis: none; /* Existing */
+  text-rendering: optimizeLegibility; /* Existing */
+  -webkit-font-smoothing: antialiased; /* Moved to body */
+  -moz-osx-font-smoothing: grayscale; /* Moved to body */
+}
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {

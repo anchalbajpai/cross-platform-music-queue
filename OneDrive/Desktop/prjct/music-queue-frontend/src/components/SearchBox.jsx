@@ -16,18 +16,17 @@ export default function SearchBox({ query, setQuery, platform, setPlatform, onSe
   );
 
   return (
-    <div className="space-y-4 font-['Roboto']"> {/* Added Roboto font */}
+    <div className="space-y-4"> {/* Roboto font will be inherited or overridden by global var(--font-family-sans) */}
       {/* Platform Selector */}
       <select
         value={platform}
         onChange={(e) => setPlatform(e.target.value)}
         disabled={isLoading}
-        className="w-full bg-gray-700 border border-gray-600 px-4 py-3 rounded-lg text-white text-sm
-          hover:border-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500
-          transition-all duration-200 appearance-none cursor-pointer shadow-lg
-          disabled:opacity-50 disabled:cursor-not-allowed" // Added disabled cursor
+        className="w-full bg-white/5 border border-[var(--aura-panel-border)] px-4 py-3 rounded-lg text-[var(--aura-text-primary)] text-sm
+                   focus:border-[var(--aura-accent)] focus:ring-1 focus:ring-[var(--aura-accent)]
+                   transition-all duration-200 appearance-none cursor-pointer shadow-sm disabled:opacity-70 disabled:cursor-not-allowed" // Opacity changed
       >
-        <option value="spotify">Spotify</option>
+        <option value="spotify" className="bg-gray-800">Spotify</option> {/* Dropdown options need background in some browsers */}
         {/* Add other platforms here if needed */}
       </select>
 
@@ -38,27 +37,33 @@ export default function SearchBox({ query, setQuery, platform, setPlatform, onSe
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyPress={handleKeyPress}
-          placeholder="Search tracks..."
+          placeholder="Search tracks, artists, albums..."
           disabled={isLoading}
-          className="w-full px-4 py-3 pr-[110px] bg-gray-700 border border-gray-600 text-white rounded-lg
-            focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-[15px] placeholder-gray-400
-            transition-all duration-200 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed" // Added disabled cursor
+          className="w-full bg-white/5 border border-[var(--aura-panel-border)] px-4 py-3 pr-12 rounded-lg
+                     text-[var(--aura-text-primary)] placeholder:text-[var(--aura-text-secondary)]
+                     focus:border-[var(--aura-accent)] focus:ring-1 focus:ring-[var(--aura-accent)] text-sm
+                     transition-all duration-200 shadow-sm disabled:opacity-70 disabled:cursor-not-allowed" // Opacity changed
         />
         <button
           onClick={onSearch}
           disabled={isLoading}
-          className="absolute right-2 top-1/2 -translate-y-1/2
-            bg-blue-500 hover:bg-blue-600 px-5 py-2 rounded-md
-            text-white font-medium shadow-lg transition-all duration-200
-            text-sm active:bg-blue-700 active:scale-95 disabled:opacity-50
-            disabled:hover:bg-blue-500 disabled:cursor-not-allowed" // Added active state and disabled cursor
+          aria-label="Search"
+          className="absolute right-0 top-0 bottom-0 px-4 py-2 rounded-r-lg
+                     bg-[var(--aura-accent)] hover:bg-[var(--aura-accent-hover)] text-white
+                     flex items-center justify-center transition-colors duration-200
+                     active:scale-90 disabled:opacity-70 disabled:cursor-not-allowed
+                     focus:outline-none focus:ring-2 focus:ring-[var(--aura-accent)] focus:ring-offset-2 focus:ring-offset-[var(--aura-bg-end)]" // Scale, Opacity, Focus changed
         >
-          {isLoading ? <Spinner /> : "Search"} {/* Using Spinner */}
+          {isLoading ? <Spinner /> : (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+              <path fillRule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z" clipRule="evenodd" />
+            </svg>
+          )}
         </button>
       </div>
 
       {error && (
-        <p className="text-red-500 text-sm mt-1">{error}</p>
+        <p className="text-red-400 text-sm mt-1">{error}</p> {/* Adjusted error color for better visibility on dark bg */}
       )}
     </div>
   );
