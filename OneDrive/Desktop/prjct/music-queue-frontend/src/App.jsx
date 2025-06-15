@@ -61,7 +61,11 @@ export default function App() {
             Added overflow-hidden for md+ screens to contain its own scrollable children if necessary.
         */}
         <section className="w-full md:w-[35%] min-w-[320px] md:min-w-[400px] flex flex-col bg-[#2D3748] rounded-xl shadow-lg md:overflow-hidden"> {/* CORRECTED BG, responsive widths, md:overflow-hidden */}
-          <div className="flex-none p-5">
+          {/* Added Search Panel Title */}
+          <h2 className="heading-oswald text-xl text-white px-5 pt-5 pb-2"> {/* Adjusted padding */}
+            Search Music
+          </h2>
+          <div className="flex-none p-5 pt-3"> {/* Adjusted SearchBox container top padding */}
             <SearchBox
               query={query}
               setQuery={setQuery}

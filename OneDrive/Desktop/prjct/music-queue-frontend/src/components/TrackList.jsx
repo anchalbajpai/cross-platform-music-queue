@@ -41,8 +41,9 @@ export default function TrackList({ tracks, onAddToQueue, searchAttempted }) {
   }
 
   return (
-    <div className="h-full overflow-y-auto p-4 bg-[#2D3748] font-['Roboto']"> {/* Added Roboto */}
-      <div className="space-y-3">
+    // Added relative and overflow-hidden to the scrollable container
+    <div className="h-full overflow-y-auto p-4 bg-[#2D3748] font-['Roboto'] relative overflow-hidden">
+      <div className="space-y-2"> {/* Changed space-y-3 to space-y-2 */}
         {tracks.map((track, index) => (
           <TrackCard
             key={track.id}
